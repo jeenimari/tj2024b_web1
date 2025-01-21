@@ -18,7 +18,7 @@ public class VisitDao {
             // 오류 1: 오타 수정 "jbdc" -> "jdbc"
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(
-                "jdbc:mysql://localhost:3306/mydb016",
+                "jdbc:mysql://localhost:3306/mydb0116",
                 "root",
                 "1234"
             );

@@ -51,7 +51,7 @@ public class VisitController extends HttpServlet {
 		
 				
 		resp.setContentType("application/json");
-		resp.getWriter().print(result);
+		resp.getWriter().print(jsonResult);
 				
 		
 		
