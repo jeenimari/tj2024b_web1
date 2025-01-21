@@ -23,7 +23,7 @@ public class WaitingDao {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn = DriverManager.getConnection(
-	                "jdbc:mysql://localhost:3306/mydb0116",
+	                "jdbc:mysql://localhost:3306/mydb0115",
 	                "root",
 	                "1234"
 	            );
