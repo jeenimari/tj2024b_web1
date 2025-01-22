@@ -24,15 +24,15 @@
 					<th>1</th>	<th><a href="view.jsp?bno=1">안녕하세요 1</a></th>	
 					<th>2025-01-22 11:09:05</th>	<th>유재석</th>	<th>30</th>
 				</tr>
-				<tr>
+				<tr> 
 					<th>2</th>	<th><a href="view.jsp?bno=2">안녕하세요2</a></th>	
 					<th>2025-01-2211:09:05</th>	<th>강호동</th>	<th>4</th>
 				</tr>
 			</tbody>
 		</table>
-		<button onclick="location.href='/tj2024b_wep1/day05/write.jsp'">글쓰기</button>
+		<button onclick="location.href='/tj2024b_wep1/day05/write1.jsp'">글쓰기</button>
 	</div>
-	
+	<script type="board.js"></script>
 	<jsp:include page="/day05/footer.jsp"></jsp:include>
 </body>
 </html>
