@@ -9,6 +9,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import web.model.dao.MemberDao;
 import web.model.dto.MemberDto;
 @WebServlet("/member/signup")
@@ -30,7 +31,9 @@ public class SignUpController extends HttpServlet{
 		resp.setContentType("application/json");
 		resp.getWriter().print(result); 
 		
-		}
-	}
+		}// f end
+	
+
+	}// class end
 	
 
