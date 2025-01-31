@@ -17,6 +17,7 @@ public class MemberDto {
         private String mpwd;        // 비밀번호
         private String mname;        // 이름
         private String mphone;        // 연락처 
-        private String mdate;        // 가입일 
+        private String mdate;       // 가 입일 
+        private String mimg; 		//프로필
 }
 
