@@ -2,6 +2,7 @@ package web.controller.member;
 
 import java.io.IOException;
 
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.ServletException;
@@ -12,8 +13,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import web.model.dao.MemberDao;
 import web.model.dto.MemberDto;
-@WebServlet("/member/login")
 
+@WebServlet("/member/login")
 public class LoginController extends HttpServlet {
 	//[로그인]
 	@Override

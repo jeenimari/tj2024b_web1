@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<h1>처음시작하는 웹개발</h1>
+
 </body>
 </html>
