@@ -1,6 +1,5 @@
 package web.controller.member;
 
-import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -9,21 +8,20 @@ import java.util.UUID;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.monitor.FileAlterationListener;
-import org.apache.jasper.tagplugins.jstl.core.Catch;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import web.model.dao.MemberDao;
 import web.model.dto.MemberDto;
 @WebServlet("/member/signup")
 public class SignUpController extends HttpServlet{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	//[프로필 등록 가능한 회원가입]
 	@Override
@@ -61,6 +59,8 @@ public class SignUpController extends HttpServlet{
 					item.write(uploadFile);
 				}
 			}
+			
+			
 		}// for end
 	
 		
@@ -72,14 +72,28 @@ public class SignUpController extends HttpServlet{
 		memberDto.setMphone(fileList.get(3).getString());
 		memberDto.setMimg(filename);//업로드된 파일명을 DTO 넣기
 		System.out.println(memberDto);
-		//12.
+		
+		
+		
+		
+		
+		//12.회원가입 성공 시 포인트 지급
 		boolean result = MemberDao.getInstance().signup(memberDto);
-		//13.
-		resp.setContentType("application/json");
-		resp.getWriter().print(result);
-		}catch(Exception e) {System.out.println("업로드 실패 : " + e ) ;}
+		  // 13. 회원가입 성공 시 포인트 지급
+        if(result) {
+            // 회원번호 가져오기
+            int mno = MemberDao.getInstance().getMno(memberDto.getMid());
+            // 포인트 지급
+            MemberDao.getInstance().insertSignupPoint(mno);
+        }
+        // 14. 결과 반환
+        resp.setContentType("application/json");
+        resp.getWriter().print(result);
+        
+        }catch(Exception e) {System.out.println("업로드 실패 : " + e);}
+    }
+       
 	}// f end
-	
 	
 	//[프로필 등록이 불가능한 회원가입]	
 //	@Override
@@ -101,6 +115,6 @@ public class SignUpController extends HttpServlet{
 //		}// f end
 	
 
-	}// class end
+	
 	
 

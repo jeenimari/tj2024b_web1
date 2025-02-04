@@ -3,10 +3,12 @@ package web.model.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import web.model.dto.MemberDto;
+import web.model.dto.PointDto;
 @NoArgsConstructor(access = lombok.AccessLevel.PRIVATE) //클래스 내 디폴트 생성자를 private 적용
 public class MemberDao extends Dao {
 	
@@ -24,7 +26,7 @@ public class MemberDao extends Dao {
     public boolean signup( MemberDto memberDto ) {
             try {
                     // [1] SQL 작성한다.
-                    String sql ="insert into member( mid , mpwd , mname , mphone,mimg ) values( ? , ? , ? , ?, ? )";
+                    String sql ="insert into member( mid , mpwd , mname , mphone,mimg ) values( ? , ? , ? , ?, ?  )";
                     // [2] DB와 연동된 곳에 SQL 기재한다.                 
                     PreparedStatement ps = conn.prepareStatement(sql);
                     ps.setString( 1 , memberDto.getMid() );
@@ -32,6 +34,7 @@ public class MemberDao extends Dao {
                     ps.setString( 3 , memberDto.getMname() );
                     ps.setString( 4 , memberDto.getMphone() );
                     ps.setString(5, memberDto.getMimg());
+                   
                     // [3] 기재된 SQL를 실행하고 결과를 받는다. .         
                     int count = ps.executeUpdate();
                     // [4] 결과에 따른 처리 및 반환를 한다.
@@ -76,6 +79,7 @@ public class MemberDao extends Dao {
                             memberDto.setMphone( rs.getString("mphone") );
                             memberDto.setMdate( rs.getString("mdate") );
                             memberDto.setMimg(rs.getString("mimg"));
+                            memberDto.setMpoint(rs.getInt("mpoint"));
                             return memberDto; // 조회된 회원정보를 반환한다.
                     }
             }catch(SQLException e ) { System.out.println(e);}
@@ -114,5 +118,78 @@ public class MemberDao extends Dao {
         }catch (SQLException e) {                System.out.println( e ); }
         return false; // 수정 실패 했을때.
 } // f end
+    
+    
+    //[6] 회원가입시 포인트 지급 메소드
+    
+    public boolean insertSignupPoint(int mno) {
+        try{
+            String sql = "insert into pointlog(mno, pcomment, ppoint) values(?, '회원가입축하', 100)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            //기재된 SQL에 매개변수값 집어넣기
+            ps.setInt(1, mno);
+            int count = ps.executeUpdate();
+            if(count == 1) {
+                sql = "update member set mpoint = mpoint + 100 where mno = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, mno);
+                int count2 = ps.executeUpdate();
+                if(count2 == 1) return true;
+            }
+        }catch(Exception e){System.out.println(e);}
+        return false;
+    }//f end
+    
+    
+ // 7. 로그인 시 포인트 지급
+    public boolean insertLoginPoint(int mno) {
+        try{
+            String sql = "insert into pointlog(mno, pcomment, ppoint) values(?, '로그인', 1)";
+            PreparedStatement ps = conn.prepareStatement(sql);
+            ps.setInt(1, mno);
+            int count = ps.executeUpdate();
+            if(count == 1) {
+                sql = "update member set mpoint = mpoint + 1 where mno = ?";
+                ps = conn.prepareStatement(sql);
+                ps.setInt(1, mno);
+                int count2 = ps.executeUpdate();
+                if(count2 == 1) return true;
+            }
+        }catch(Exception e){System.out.println(e);}
+        return false;
+    }
+    
+    //8.
+    public ArrayList<PointDto> getPointList(int mno) {
+    ArrayList<PointDto> list = new ArrayList<>();
+    try{
+        String sql = "select * from pointlog where mno = ? order by pdate desc";
+        PreparedStatement ps = conn.prepareStatement(sql);
+        ps.setInt(1, mno);
+       ResultSet rs = ps.executeQuery();
+        while(rs.next()){
+        	PointDto dto = new PointDto(
+            );
+            list.add(dto);
+        }
+    }catch(Exception e){System.out.println(e);}
+    return list;
+    
+    }
+
+	public int getMno(String mid) {
+		 try {
+		        String sql = "select mno from member where mid = ?";
+		        PreparedStatement ps = conn.prepareStatement(sql);
+		        ps.setString(1, mid);
+		        ResultSet rs = ps.executeQuery();
+		        rs = ps.executeQuery();
+		        if(rs.next()) {
+		            return rs.getInt("mno");
+		        }
+		    }catch(Exception e){System.out.println(e);}
+		    return 0;
+	}//f end
+    
     
 }//class end

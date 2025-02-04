@@ -1,6 +1,7 @@
 package web.controller.member;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -12,38 +13,45 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import web.model.dao.MemberDao;
 import web.model.dto.MemberDto;
+import web.model.dto.PointDto;
 
 @WebServlet("/member/info")
 public class InfoController  extends HttpServlet{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//1.[HTTP  요청의 header body 자료(JSON) 을 자바 (DTO ) 로 받는다.]
-			
-				
-				//[2]데이터 유효성검사]
-				//3.[DAO 에게 데이터 전달하고 응답받기]
-		MemberDto result = null;
-					//(1) 현재 로그인된 회원의 번호 : 세션객체내 존재. 속성명 : loginMno
-		
-					HttpSession session= req.getSession(); //세션가져오기
-					Object object = session.getAttribute("loginMno"); 
-					
-					//(2) 만약에 세션객체내 지정한 속성값이 존재
-					if(object !=null) {
-						int loginMno = (Integer)object;
-						result = MemberDao.getInstance().myInfo(loginMno);
-					}
-		
-				//4.[자료(DTO/자바) 타입을 JS(JSON)타입으로 변환한다.] 
-					ObjectMapper mapper = new ObjectMapper(); 
-					 String jsonResult = mapper.writeValueAsString( result );
-		               	//5.[HTTP 응답의 header body로 apllication/json 으로 응답/반환하기]
-		                resp.setContentType("application/json");
-		                resp.getWriter().print( jsonResult );
-				
-				
+		 // 1. 회원정보 + 포인트정보 가져오기
+	    MemberDto result = null;
+	    ArrayList<PointDto> pointList = null;
+	    
+	    // 2. 세션 확인
+	    HttpSession session = req.getSession();
+	    Object object = session.getAttribute("loginMno");
+	    
+	    // 3. 세션에 회원번호가 있으면 정보 가져오기
+	    if(object != null) {
+	        int loginMno = (Integer)object;
+	        // 회원정보 가져오기
+	        result = MemberDao.getInstance().myInfo(loginMno);
+	        // 포인트정보 가져오기
+	        pointList = MemberDao.getInstance().getPointList(loginMno);
+	    }
+
+	    // 4. 응답객체 구성
+	    ObjectMapper mapper = new ObjectMapper();
+	    String jsonResult = mapper.writeValueAsString(result);
+	    
+	    // 5. 응답
+	    resp.setContentType("application/json");
+	    resp.getWriter().print(jsonResult);
 	}
+	
+	
 	
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

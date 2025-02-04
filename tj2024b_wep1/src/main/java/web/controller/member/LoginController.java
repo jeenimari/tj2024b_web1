@@ -16,6 +16,11 @@ import web.model.dto.MemberDto;
 
 @WebServlet("/member/login")
 public class LoginController extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	//[로그인]
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -30,6 +35,7 @@ public class LoginController extends HttpServlet {
         		//(2)추후에 로그인 인증에서 사용될 예정
         		session.setAttribute("loginMno", loginMno); //세션에 속성 추가 : 톰캣 서버의 데이터 저장
         		session.setMaxInactiveInterval(60*10); // 초 : 60초 *10 = 10분 
+        		MemberDao.getInstance().insertLoginPoint(loginMno);
         	}//if end
 		resp.setContentType("application/json");
 		resp.getWriter().print(loginMno);
