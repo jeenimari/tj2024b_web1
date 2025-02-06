@@ -138,8 +138,7 @@ public class MemberDao extends Dao {
             }
         }catch(Exception e){System.out.println(e);}
         return false;
-    }//f end
-    
+    }//f endo
     
  // 7. 로그인 시 포인트 지급
     public boolean insertLoginPoint(int mno) {
