@@ -23,6 +23,7 @@ public class BoardDto {
     
     //+HTML에 출력할때 작성자의 회원번호가 아닌 작성자 ID 출력
     private String mid;
+    private String cname;
 	
 	
 	

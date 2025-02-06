@@ -103,6 +103,43 @@ public class BoardDao extends Dao {
 		return false;
 	}// fend
 	
+	//5 게시물 개별 조회 findByBno SQL 메소드
+	
+	public BoardDto findByBno(int bno) {
+		try {
+			//1.특정 게시물 테이블 게시물 1개조회
+			//String sql = "select*from board where bno=?";
+			//2. 게시물 테이블과 회원 테이블 교집합 구해서 회원아이디 조회가능
+			//String sql ="select*from board b inner join member b on b.mno  = m.mno";
+			//3.게시물 테이블과 회원테이블과 카테고리 테이블 교집합 구해서 회원아이디와 카테고리명 조회가능
+			String sql="select*from"
+					+ "board b inner join member b on b.mno=m.mno"
+					+ "inner join category c on b.cno = c.cno"
+					+ "where bno=?";
+			
+			PreparedStatement ps = conn.prepareStatement(sql);
+			ps.setInt(1, bno);
+			ResultSet rs = ps.executeQuery();
+			if(rs.next()) {
+				BoardDto boardDto = new BoardDto();
+				
+				boardDto.setBno(rs.getInt("bno"));
+				boardDto.setBtitle(rs.getString("btitle"));
+				boardDto.setBcontent(rs.getString("bcontent"));
+				boardDto.setBdate(rs.getString("bdate"));
+				boardDto.setBview(rs.getInt("bview"));
+				boardDto.setMno(rs.getInt("mno"));
+				boardDto.setCno(rs.getInt("cno"));
+				boardDto.setMid(rs.getString("mid"));
+				boardDto.setCname(rs.getString("cname")); //카테고리 테이블과 조인한 결과 가능
+				return boardDto;
+			}
+			
+		}catch (SQLException e) {
+			System.out.println(e);
+		}
+		return null;
+	}
 	
 	
 	
