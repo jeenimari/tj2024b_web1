@@ -1,35 +1,29 @@
-console.log('login.js open')
+console.log( 'login.js open')
 
-//[1]로그인 요청 함수
-const onLogin = ( ) =>{
-	
-	//1.HTML  input Dom 가져오기
-	
+// [1] 로그인 요청 함수 
+const onLogin = ( ) => {
+	// 1. HTML INPUT DOM 가져오기 
 	const midinput = document.querySelector('.midinput');
-	console.log(midinput);
 	const mpwdinput = document.querySelector('.mpwdinput');
-	//2.INPUT 입력값 가져오기 
+	// 2. INPUT 입력값 가져오기 
 	const mid = midinput.value;
 	const mpwd = mpwdinput.value;
-	
-	
-	//3.유효성 검사 (일단생략)
-	
-	
-	//4.fetch
-	//보낼 데이터를 객체화(json)화
-	const obj = {	mid : mid , mpwd : mpwd	}
+	// 3. 유효성검사
+	// 4. fetch 
+	// * 보낼 데이터를 객체(JSON) 화 
+	const obj = { mid : mid , mpwd : mpwd }
+	// * fetch 설정
 	const option = {
-		method : 'POST',
-		header : {'Content-Tyep' : 'application/json'},
-		body : JSON.stringify(obj)
-	 }
-	 fetch('/tj2024b_wep1/member/login',option)
-	 .then(response =>response.json())
-	 .then(data =>{
-		if(data>0){alert('로그인성공'); location.href="../index.jsp";} // ../ 상위폴더로 이동 뜻
-		else{alert('로그인 실패'); }
-		
-	 })
-	 .catch(error =>{console.log(error)})
-}// f end
+		method : 'POST' , // - 요청할 http method 선택 
+		headers : { 'Content-Type' : 'application/json'}, // - 요청할 http body 타입 설정 
+		body : JSON.stringify( obj ) // - 요청할 http 자료 , 자료를 JSON형식의 문자열 타입 으로 변환 
+	}
+	// * fetch 
+	fetch( '/tj2024b_web1/member/login' , option )
+		.then( response => response.json() )
+		.then( data => { 
+			if( data > 0 ){ alert('로그인성공'); location.href="../index.jsp"; } // ../ 상위 폴더로 이동 뜻 
+			else{ alert('로그인실패'); }
+		})
+		.catch( error => { console.log(error )})
+} // f end 
